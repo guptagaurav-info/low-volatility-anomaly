@@ -1,0 +1,8 @@
+flowchart LR
+  A["US stock prices and dividends (sha256 pinned)"] --> B["Daily total returns 2000-2026"]
+  B --> C["500 most traded each month-end"]
+  C --> D["Trailing 12-month volatility and beta"]
+  D --> E["Quintiles, held one month, 10 bp costs"]
+  E --> F["Return, risk, CAPM alpha"]
+  E --> G["Dollar-neutral and beta-neutral long-short"]
+  F --> H["Eras, crash months, sector tilt"]

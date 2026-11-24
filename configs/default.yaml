@@ -1,0 +1,24 @@
+source: https://huggingface.co/datasets/defeatbeta/yahoo-finance-data (US stock_prices, stock_dividend_events, stock_profile, daily_treasury_yield; ODC-BY)
+sources:
+  stock_prices.parquet: {url: "https://huggingface.co/datasets/defeatbeta/yahoo-finance-data/resolve/main/data/US/stock_prices.parquet", licence: "ODC-BY", sha256: "4c522ec0dee02cb6554b5c3e4929d512327715c8f89670f9b1898b2403912f98"}
+  stock_profile.parquet: {url: "https://huggingface.co/datasets/defeatbeta/yahoo-finance-data/resolve/main/data/US/stock_profile.parquet", licence: "ODC-BY", sha256: "b57443c42ffcc48e9b7ef5b6c05df09e4acc433d14ec25306a8af9ac4e65de8f"}
+  stock_dividend_events.parquet: {url: "https://huggingface.co/datasets/defeatbeta/yahoo-finance-data/resolve/main/data/US/stock_dividend_events.parquet", licence: "ODC-BY", sha256: "9eb8265ac9d21997a8d9a31f7ee8e5099c42ca2508fe36a07929595b378d4b54"}
+  daily_treasury_yield.parquet: {url: "https://huggingface.co/datasets/defeatbeta/yahoo-finance-data/resolve/main/data/US/daily_treasury_yield.parquet", licence: "ODC-BY (underlying data: US Treasury, public domain)", sha256: "d01fa8d1b818ad3ba61fe459dcbf317af981b926f513054ba0104328fdce31e0"}
+# Pre-registered rule, fixed before any result was seen
+universe_top: 500          # most traded US operating companies by average daily dollar volume, trailing 252 days
+min_price: 5.0
+max_zero_days: 0.1         # stale-quote filter over the trailing window
+min_obs: 200               # valid daily returns in the trailing 252 days
+lookback_days: 252         # volatility and beta estimated on the trailing 12 months, data to the month-end only
+n_groups: 5                # quintiles, equal-weighted, rebalanced monthly, held one month
+cost_bps_per_side: 10      # one-way cost on traded notional
+first_month: "2002-01-31"
+last_month: "2026-10-30"
+periods: {"2002-2009": ["2002-01-01", "2009-12-31"], "2010-2019": ["2010-01-01", "2019-12-31"], "2020-2026": ["2020-01-01", "2026-10-31"]}
+crash_months: 30           # worst S&P 500 (SPY) months, for the downside test
+notional_usd: 100000000
+# Hypotheses (pre-registered)
+# H1: the lowest-volatility quintile has a higher Sharpe ratio than the highest-volatility quintile
+# H2: the lowest-volatility quintile's raw return is at least as high as the highest-volatility quintile's
+# H3: low-minus-high has positive CAPM alpha with Newey-West t > 2
+# H4: H3 holds when stocks are ranked within their sector (sector-neutral)
